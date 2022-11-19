@@ -21,23 +21,27 @@
 [v ___eecpymem __eecpymem `(v  1 e 1 0 ]
 "39
 [v ___memcpyee __memcpyee `(v  1 e 1 0 ]
-"65 C:\Users\byron\OneDrive\Documents\GitHub\Brazo\Proyecto2.X\main.c
+"71 C:\Users\byron\OneDrive\Documents\GitHub\Brazo\Proyecto2.X\main.c
 [v _isr isr `II(v  1 e 1 0 ]
-"106
+"155
 [v _main main `(v  1 e 1 0 ]
-"237
+"288
 [v _setup setup `(v  1 e 1 0 ]
-"278
+"329
 [v _setupADC setupADC `(v  1 e 1 0 ]
-"314
+"365
 [v _setupPWM setupPWM `(v  1 e 1 0 ]
-"357
+"408
 [v _estado_alto estado_alto `(v  1 e 1 0 ]
-"374
+"425
 [v _conv_s1 conv_s1 `(v  1 e 1 0 ]
-"379
+"430
 [v _conv_s2 conv_s2 `(v  1 e 1 0 ]
-"384
+"435
+[v _read_EEPROM read_EEPROM `(uc  1 e 1 0 ]
+"445
+[v _write_EEPROM write_EEPROM `(v  1 e 1 0 ]
+"468
 [v _map map `(ui  1 e 2 0 ]
 "60 C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\pic\include\proc\pic16f887.h
 [v _TMR0 TMR0 `VEuc  1 e 1 @1 ]
@@ -73,7 +77,7 @@
 [v _PORTCbits PORTCbits `VES64  1 e 1 @7 ]
 "353
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
-[s S114 . 1 `uc 1 RD0 1 0 :1:0 
+[s S125 . 1 `uc 1 RD0 1 0 :1:0 
 `uc 1 RD1 1 0 :1:1 
 `uc 1 RD2 1 0 :1:2 
 `uc 1 RD3 1 0 :1:3 
@@ -83,8 +87,8 @@
 `uc 1 RD7 1 0 :1:7 
 ]
 "370
-[u S123 . 1 `S114 1 . 1 0 ]
-[v _PORTDbits PORTDbits `VES123  1 e 1 @8 ]
+[u S134 . 1 `S125 1 . 1 0 ]
+[v _PORTDbits PORTDbits `VES134  1 e 1 @8 ]
 [s S22 . 1 `uc 1 RBIF 1 0 :1:0 
 `uc 1 INTF 1 0 :1:1 
 `uc 1 T0IF 1 0 :1:2 
@@ -102,7 +106,7 @@
 ]
 [u S36 . 1 `S22 1 . 1 0 `S31 1 . 1 0 ]
 [v _INTCONbits INTCONbits `VES36  1 e 1 @11 ]
-[s S416 . 1 `uc 1 TMR1IF 1 0 :1:0 
+[s S427 . 1 `uc 1 TMR1IF 1 0 :1:0 
 `uc 1 TMR2IF 1 0 :1:1 
 `uc 1 CCP1IF 1 0 :1:2 
 `uc 1 SSPIF 1 0 :1:3 
@@ -111,14 +115,14 @@
 `uc 1 ADIF 1 0 :1:6 
 ]
 "554
-[u S424 . 1 `S416 1 . 1 0 ]
-[v _PIR1bits PIR1bits `VES424  1 e 1 @12 ]
-[s S435 . 1 `uc 1 T2CKPS 1 0 :2:0 
+[u S435 . 1 `S427 1 . 1 0 ]
+[v _PIR1bits PIR1bits `VES435  1 e 1 @12 ]
+[s S446 . 1 `uc 1 T2CKPS 1 0 :2:0 
 `uc 1 TMR2ON 1 0 :1:2 
 `uc 1 TOUTPS 1 0 :4:3 
 ]
 "794
-[s S439 . 1 `uc 1 T2CKPS0 1 0 :1:0 
+[s S450 . 1 `uc 1 T2CKPS0 1 0 :1:0 
 `uc 1 T2CKPS1 1 0 :1:1 
 `uc 1 . 1 0 :1:2 
 `uc 1 TOUTPS0 1 0 :1:3 
@@ -126,16 +130,16 @@
 `uc 1 TOUTPS2 1 0 :1:5 
 `uc 1 TOUTPS3 1 0 :1:6 
 ]
-[u S447 . 1 `S435 1 . 1 0 `S439 1 . 1 0 ]
-[v _T2CONbits T2CONbits `VES447  1 e 1 @18 ]
+[u S458 . 1 `S446 1 . 1 0 `S450 1 . 1 0 ]
+[v _T2CONbits T2CONbits `VES458  1 e 1 @18 ]
 "928
 [v _CCPR1L CCPR1L `VEuc  1 e 1 @21 ]
-[s S351 . 1 `uc 1 CCP1M 1 0 :4:0 
+[s S362 . 1 `uc 1 CCP1M 1 0 :4:0 
 `uc 1 DC1B 1 0 :2:4 
 `uc 1 P1M 1 0 :2:6 
 ]
 "969
-[s S355 . 1 `uc 1 CCP1M0 1 0 :1:0 
+[s S366 . 1 `uc 1 CCP1M0 1 0 :1:0 
 `uc 1 CCP1M1 1 0 :1:1 
 `uc 1 CCP1M2 1 0 :1:2 
 `uc 1 CCP1M3 1 0 :1:3 
@@ -144,37 +148,37 @@
 `uc 1 P1M0 1 0 :1:6 
 `uc 1 P1M1 1 0 :1:7 
 ]
-[s S364 . 1 `uc 1 . 1 0 :4:0 
+[s S375 . 1 `uc 1 . 1 0 :4:0 
 `uc 1 CCP1Y 1 0 :1:4 
 `uc 1 CCP1X 1 0 :1:5 
 ]
-[u S368 . 1 `S351 1 . 1 0 `S355 1 . 1 0 `S364 1 . 1 0 ]
-[v _CCP1CONbits CCP1CONbits `VES368  1 e 1 @23 ]
+[u S379 . 1 `S362 1 . 1 0 `S366 1 . 1 0 `S375 1 . 1 0 ]
+[v _CCP1CONbits CCP1CONbits `VES379  1 e 1 @23 ]
 "1155
 [v _CCPR2L CCPR2L `VEuc  1 e 1 @27 ]
-[s S390 . 1 `uc 1 CCP2M 1 0 :4:0 
+[s S401 . 1 `uc 1 CCP2M 1 0 :4:0 
 `uc 1 DC2B0 1 0 :1:4 
 `uc 1 DC2B1 1 0 :1:5 
 ]
 "1189
-[s S394 . 1 `uc 1 CCP2M0 1 0 :1:0 
+[s S405 . 1 `uc 1 CCP2M0 1 0 :1:0 
 `uc 1 CCP2M1 1 0 :1:1 
 `uc 1 CCP2M2 1 0 :1:2 
 `uc 1 CCP2M3 1 0 :1:3 
 `uc 1 CCP2Y 1 0 :1:4 
 `uc 1 CCP2X 1 0 :1:5 
 ]
-[u S401 . 1 `S390 1 . 1 0 `S394 1 . 1 0 ]
-[v _CCP2CONbits CCP2CONbits `VES401  1 e 1 @29 ]
+[u S412 . 1 `S401 1 . 1 0 `S405 1 . 1 0 ]
+[v _CCP2CONbits CCP2CONbits `VES412  1 e 1 @29 ]
 "1239
 [v _ADRESH ADRESH `VEuc  1 e 1 @30 ]
-[s S135 . 1 `uc 1 ADON 1 0 :1:0 
+[s S146 . 1 `uc 1 ADON 1 0 :1:0 
 `uc 1 GO_nDONE 1 0 :1:1 
 `uc 1 CHS 1 0 :4:2 
 `uc 1 ADCS 1 0 :2:6 
 ]
 "1277
-[s S140 . 1 `uc 1 . 1 0 :1:0 
+[s S151 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 GO 1 0 :1:1 
 `uc 1 CHS0 1 0 :1:2 
 `uc 1 CHS1 1 0 :1:3 
@@ -183,15 +187,15 @@
 `uc 1 ADCS0 1 0 :1:6 
 `uc 1 ADCS1 1 0 :1:7 
 ]
-[s S149 . 1 `uc 1 . 1 0 :1:0 
+[s S160 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 nDONE 1 0 :1:1 
 ]
-[s S152 . 1 `uc 1 . 1 0 :1:0 
+[s S163 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 GO_DONE 1 0 :1:1 
 ]
-[u S155 . 1 `S135 1 . 1 0 `S140 1 . 1 0 `S149 1 . 1 0 `S152 1 . 1 0 ]
-[v _ADCON0bits ADCON0bits `VES155  1 e 1 @31 ]
-[s S219 . 1 `uc 1 PS 1 0 :3:0 
+[u S166 . 1 `S146 1 . 1 0 `S151 1 . 1 0 `S160 1 . 1 0 `S163 1 . 1 0 ]
+[v _ADCON0bits ADCON0bits `VES166  1 e 1 @31 ]
+[s S230 . 1 `uc 1 PS 1 0 :3:0 
 `uc 1 PSA 1 0 :1:3 
 `uc 1 T0SE 1 0 :1:4 
 `uc 1 T0CS 1 0 :1:5 
@@ -199,15 +203,15 @@
 `uc 1 nRBPU 1 0 :1:7 
 ]
 "1367
-[s S226 . 1 `uc 1 PS0 1 0 :1:0 
+[s S237 . 1 `uc 1 PS0 1 0 :1:0 
 `uc 1 PS1 1 0 :1:1 
 `uc 1 PS2 1 0 :1:2 
 ]
-[u S230 . 1 `S219 1 . 1 0 `S226 1 . 1 0 ]
-[v _OPTION_REGbits OPTION_REGbits `VES230  1 e 1 @129 ]
+[u S241 . 1 `S230 1 . 1 0 `S237 1 . 1 0 ]
+[v _OPTION_REGbits OPTION_REGbits `VES241  1 e 1 @129 ]
 "1417
 [v _TRISA TRISA `VEuc  1 e 1 @133 ]
-[s S272 . 1 `uc 1 TRISA0 1 0 :1:0 
+[s S283 . 1 `uc 1 TRISA0 1 0 :1:0 
 `uc 1 TRISA1 1 0 :1:1 
 `uc 1 TRISA2 1 0 :1:2 
 `uc 1 TRISA3 1 0 :1:3 
@@ -217,13 +221,13 @@
 `uc 1 TRISA7 1 0 :1:7 
 ]
 "1434
-[u S281 . 1 `S272 1 . 1 0 ]
-[v _TRISAbits TRISAbits `VES281  1 e 1 @133 ]
+[u S292 . 1 `S283 1 . 1 0 ]
+[v _TRISAbits TRISAbits `VES292  1 e 1 @133 ]
 "1479
 [v _TRISB TRISB `VEuc  1 e 1 @134 ]
 "1541
 [v _TRISC TRISC `VEuc  1 e 1 @135 ]
-[s S329 . 1 `uc 1 TRISC0 1 0 :1:0 
+[s S340 . 1 `uc 1 TRISC0 1 0 :1:0 
 `uc 1 TRISC1 1 0 :1:1 
 `uc 1 TRISC2 1 0 :1:2 
 `uc 1 TRISC3 1 0 :1:3 
@@ -233,38 +237,42 @@
 `uc 1 TRISC7 1 0 :1:7 
 ]
 "1558
-[u S338 . 1 `S329 1 . 1 0 ]
-[v _TRISCbits TRISCbits `VES338  1 e 1 @135 ]
+[u S349 . 1 `S340 1 . 1 0 ]
+[v _TRISCbits TRISCbits `VES349  1 e 1 @135 ]
 "1603
 [v _TRISD TRISD `VEuc  1 e 1 @136 ]
-[s S246 . 1 `uc 1 SCS 1 0 :1:0 
+[s S257 . 1 `uc 1 SCS 1 0 :1:0 
 `uc 1 LTS 1 0 :1:1 
 `uc 1 HTS 1 0 :1:2 
 `uc 1 OSTS 1 0 :1:3 
 `uc 1 IRCF 1 0 :3:4 
 ]
 "1883
-[s S252 . 1 `uc 1 . 1 0 :4:0 
+[s S263 . 1 `uc 1 . 1 0 :4:0 
 `uc 1 IRCF0 1 0 :1:4 
 `uc 1 IRCF1 1 0 :1:5 
 `uc 1 IRCF2 1 0 :1:6 
 ]
-[u S257 . 1 `S246 1 . 1 0 `S252 1 . 1 0 ]
-[v _OSCCONbits OSCCONbits `VES257  1 e 1 @143 ]
+[u S268 . 1 `S257 1 . 1 0 `S263 1 . 1 0 ]
+[v _OSCCONbits OSCCONbits `VES268  1 e 1 @143 ]
 "2042
 [v _PR2 PR2 `VEuc  1 e 1 @146 ]
 "2417
 [v _IOCB IOCB `VEuc  1 e 1 @150 ]
-[s S314 . 1 `uc 1 . 1 0 :4:0 
+[s S325 . 1 `uc 1 . 1 0 :4:0 
 `uc 1 VCFG0 1 0 :1:4 
 `uc 1 VCFG1 1 0 :1:5 
 `uc 1 . 1 0 :1:6 
 `uc 1 ADFM 1 0 :1:7 
 ]
 "2992
-[u S320 . 1 `S314 1 . 1 0 ]
-[v _ADCON1bits ADCON1bits `VES320  1 e 1 @159 ]
-[s S293 . 1 `uc 1 ANS0 1 0 :1:0 
+[u S331 . 1 `S325 1 . 1 0 ]
+[v _ADCON1bits ADCON1bits `VES331  1 e 1 @159 ]
+"3251
+[v _EEDAT EEDAT `VEuc  1 e 1 @268 ]
+"3258
+[v _EEADR EEADR `VEuc  1 e 1 @269 ]
+[s S304 . 1 `uc 1 ANS0 1 0 :1:0 
 `uc 1 ANS1 1 0 :1:1 
 `uc 1 ANS2 1 0 :1:2 
 `uc 1 ANS3 1 0 :1:3 
@@ -274,12 +282,30 @@
 `uc 1 ANS7 1 0 :1:7 
 ]
 "3405
-[u S302 . 1 `S293 1 . 1 0 ]
-[v _ANSELbits ANSELbits `VES302  1 e 1 @392 ]
+[u S313 . 1 `S304 1 . 1 0 ]
+[v _ANSELbits ANSELbits `VES313  1 e 1 @392 ]
 "3450
 [v _ANSELH ANSELH `VEuc  1 e 1 @393 ]
+[s S477 . 1 `uc 1 RD 1 0 :1:0 
+`uc 1 WR 1 0 :1:1 
+`uc 1 WREN 1 0 :1:2 
+`uc 1 WRERR 1 0 :1:3 
+`uc 1 . 1 0 :3:4 
+`uc 1 EEPGD 1 0 :1:7 
+]
+"3515
+[u S484 . 1 `S477 1 . 1 0 ]
+[v _EECON1bits EECON1bits `VES484  1 e 1 @396 ]
+"3545
+[v _EECON2 EECON2 `VEuc  1 e 1 @397 ]
 "3592
 [v _ADIF ADIF `VEb  1 e 0 @102 ]
+"3901
+[v _GIE GIE `VEb  1 e 0 @95 ]
+"4183
+[v _RD RD `VEb  1 e 0 @3168 ]
+"4633
+[v _WR WR `VEb  1 e 0 @3169 ]
 "36 C:\Users\byron\OneDrive\Documents\GitHub\Brazo\Proyecto2.X\main.c
 [v _ADC1 ADC1 `ui  1 e 2 0 ]
 "37
@@ -297,28 +323,30 @@
 "43
 [v _SERVO4 SERVO4 `ui  1 e 2 0 ]
 "45
+[v _ADDRESS ADDRESS `uc  1 e 1 0 ]
+"46
 [v _MODO MODO `uc  1 e 1 0 ]
-"106
+"155
 [v _main main `(v  1 e 1 0 ]
 {
-"231
+"282
 } 0
-"314
+"365
 [v _setupPWM setupPWM `(v  1 e 1 0 ]
 {
-"355
+"406
 } 0
-"278
+"329
 [v _setupADC setupADC `(v  1 e 1 0 ]
 {
-"312
+"363
 } 0
-"237
+"288
 [v _setup setup `(v  1 e 1 0 ]
 {
-"276
+"327
 } 0
-"384
+"468
 [v _map map `(ui  1 e 2 0 ]
 {
 [v map@ADC ADC `uc  1 a 1 wreg ]
@@ -328,7 +356,7 @@
 [v map@salida_min salida_min `i  1 p 2 19 ]
 [v map@salida_max salida_max `i  1 p 2 21 ]
 [v map@ADC ADC `uc  1 a 1 26 ]
-"386
+"470
 } 0
 "15 C:\Program Files\Microchip\xc8\v2.40\pic\sources\c90\common\Umul16.c
 [v ___wmul __wmul `(ui  1 e 2 0 ]
@@ -353,17 +381,17 @@
 [v ___awdiv@dividend dividend `i  1 p 2 8 ]
 "41
 } 0
-"379 C:\Users\byron\OneDrive\Documents\GitHub\Brazo\Proyecto2.X\main.c
+"430 C:\Users\byron\OneDrive\Documents\GitHub\Brazo\Proyecto2.X\main.c
 [v _conv_s2 conv_s2 `(v  1 e 1 0 ]
 {
-[v conv_s2@valor valor `i  1 p 2 0 ]
-"382
+[v conv_s2@valor valor `i  1 p 2 70 ]
+"433
 } 0
-"374
+"425
 [v _conv_s1 conv_s1 `(v  1 e 1 0 ]
 {
-[v conv_s1@valor valor `i  1 p 2 0 ]
-"377
+[v conv_s1@valor valor `i  1 p 2 70 ]
+"428
 } 0
 "10 C:\Program Files\Microchip\xc8\v2.40\pic\sources\c90\common\xxtofl.c
 [v ___xxtofl __xxtofl `(d  1 e 4 0 ]
@@ -393,21 +421,21 @@
 "8 C:\Program Files\Microchip\xc8\v2.40\pic\sources\c90\common\sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S873 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S908 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S878 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
-[u S881 . 4 `l 1 i 4 0 `d 1 f 4 0 `S873 1 fAsBytes 4 0 `S878 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S881  1 a 4 34 ]
+[s S913 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
+[u S916 . 4 `l 1 i 4 0 `d 1 f 4 0 `S908 1 fAsBytes 4 0 `S913 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S916  1 a 4 34 ]
 "12
-[v ___flmul@grs grs `ul  1 a 4 29 ]
-[s S950 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[v ___flmul@grs grs `ul  1 a 4 28 ]
+[s S985 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S953 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S950 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S953  1 a 2 38 ]
+[u S988 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S985 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S988  1 a 2 38 ]
 "10
 [v ___flmul@bexp bexp `uc  1 a 1 33 ]
 "11
-[v ___flmul@aexp aexp `uc  1 a 1 28 ]
+[v ___flmul@aexp aexp `uc  1 a 1 32 ]
 "9
 [v ___flmul@sign sign `uc  1 a 1 27 ]
 "8
@@ -445,14 +473,34 @@
 [v ___fladd@a a `d  1 p 4 44 ]
 "237
 } 0
-"65 C:\Users\byron\OneDrive\Documents\GitHub\Brazo\Proyecto2.X\main.c
+"71 C:\Users\byron\OneDrive\Documents\GitHub\Brazo\Proyecto2.X\main.c
 [v _isr isr `II(v  1 e 1 0 ]
 {
-"100
+"149
 } 0
-"357
+"445
+[v _write_EEPROM write_EEPROM `(v  1 e 1 0 ]
+{
+[v write_EEPROM@ADDRESS ADDRESS `uc  1 a 1 wreg ]
+"447
+[v write_EEPROM@gieStatus gieStatus `uc  1 a 1 2 ]
+"445
+[v write_EEPROM@ADDRESS ADDRESS `uc  1 a 1 wreg ]
+[v write_EEPROM@DATA DATA `uc  1 p 1 0 ]
+[v write_EEPROM@ADDRESS ADDRESS `uc  1 a 1 1 ]
+"466
+} 0
+"435
+[v _read_EEPROM read_EEPROM `(uc  1 e 1 0 ]
+{
+[v read_EEPROM@ADDRESS ADDRESS `uc  1 a 1 wreg ]
+[v read_EEPROM@ADDRESS ADDRESS `uc  1 a 1 wreg ]
+[v read_EEPROM@ADDRESS ADDRESS `uc  1 a 1 0 ]
+"443
+} 0
+"408
 [v _estado_alto estado_alto `(v  1 e 1 0 ]
 {
 [v estado_alto@seg seg `ui  1 p 2 0 ]
-"372
+"423
 } 0

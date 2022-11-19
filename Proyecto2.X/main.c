@@ -42,7 +42,9 @@ unsigned int SERVO2;
 unsigned int SERVO3;
 unsigned int SERVO4;
 
-uint8_t MODO = 0;
+uint8_t ADDRESS = 0; 
+uint8_t MODO = 0; 
+uint8_t DATA;
 
 //******************************************************************************
 // Prototipos de Funciones
@@ -55,6 +57,10 @@ void setupPWM(void);
 void estado_alto (unsigned int seg);
 void conv_s1(int valor);
 void conv_s2(int valor);
+
+void write_EEPROM(uint8_t ADDRESS, uint8_t DATA);
+
+uint8_t read_EEPROM(uint8_t ADDRESS);
 
 unsigned int map(uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max);
 
@@ -94,6 +100,49 @@ void __interrupt () isr (void)
             MODO++;             // Incrementamos en 1 MODO
         }
         
+        if (PORTBbits.RB1 == 0) // Verificamos si se presionó RB1
+        {
+            ADDRESS = ADDRESS + 4; // Le sumamos 4 a ADDRESS
+        }
+        
+        else if (PORTBbits.RB2 == 0)    // Verificamos si se presionó RB2
+        { 
+            ADDRESS = ADDRESS - 4; // Le restamos 4 a ADDRESS
+        }
+
+        else if (PORTBbits.RB3 == 0)    // Verificamos si se presionó RB3
+        {
+            write_EEPROM(ADDRESS, SERVO1);
+            write_EEPROM(ADDRESS + 1, SERVO2);
+            write_EEPROM(ADDRESS + 2, SERVO3);
+            write_EEPROM(ADDRESS + 3, SERVO4);
+
+            // Reescribimos la EEPROM
+        }
+        
+        else if (MODO == 1)
+        {
+            if (PORTBbits.RB4 == 0)     // Verificamos si se presionó RB4
+            {
+                SERVO1 = read_EEPROM(ADDRESS);
+                SERVO2 = read_EEPROM(ADDRESS+1);
+                SERVO3 = read_EEPROM(ADDRESS+2);
+                SERVO4 = read_EEPROM(ADDRESS+3);
+
+                // Leemos la EEPROM
+
+            }
+            else if (PORTBbits.RB1 == 0)    // Verificamos si se presionó RB1
+            {
+                ADDRESS = ADDRESS + 4;  // Le sumamos 4 a ADDRESS
+            }
+
+            else if (PORTBbits.RB2 == 0)    // Verificamos si se presionó RB2
+            {
+                ADDRESS = ADDRESS - 4;  // Le restamos 4 a ADDRESS
+            }
+        }
+
         INTCONbits.RBIF = 0;    // Bajamos la bandera de interrupción dle RBIF
     }
     return;
@@ -110,7 +159,7 @@ void main(void)
     setupPWM();
     
     while(1)
-    {
+    {    
         //**********************************************************************
         // Modo Manual
         //**********************************************************************
@@ -208,7 +257,9 @@ void main(void)
         {
             PORTDbits.RD0 = 0;
             PORTDbits.RD1 = 1;
-            PORTDbits.RD2 = 0;    
+            PORTDbits.RD2 = 0;
+            CCPR2L = SERVO2;
+            CCPR1L = SERVO1;    
         }
         
         //**********************************************************************
@@ -379,6 +430,39 @@ void conv_s1(int valor)
 void conv_s2(int valor)
 {
     SERVO2 = (unsigned short) (7+( (float)(13)/(255) ) * (valor-0));
+}
+
+uint8_t read_EEPROM (uint8_t ADDRESS)
+{
+    while (WR||RD);
+    
+    EEADR = ADDRESS;
+    EECON1bits.EEPGD = 0;
+    EECON1bits.RD = 1;
+    return EEDAT;    
+}
+
+void write_EEPROM(uint8_t ADDRESS, uint8_t DATA)
+{
+    uint8_t gieStatus;
+    while (WR);
+    
+    EEADR = ADDRESS;
+    EEDAT = DATA;
+    
+    EECON1bits.EEPGD = 0;
+    EECON1bits.WREN = 1;
+
+    gieStatus = GIE;
+    INTCONbits.GIE = 0;
+
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+    
+    EECON1bits.WR = 1;
+    EECON1bits. WREN = 0;
+    
+    INTCONbits.GIE = gieStatus;
 }
 
 unsigned int map (uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max){

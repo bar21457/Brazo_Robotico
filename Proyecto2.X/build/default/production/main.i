@@ -2664,7 +2664,9 @@ unsigned int SERVO2;
 unsigned int SERVO3;
 unsigned int SERVO4;
 
+uint8_t ADDRESS = 0;
 uint8_t MODO = 0;
+uint8_t DATA;
 
 
 
@@ -2677,6 +2679,10 @@ void setupPWM(void);
 void estado_alto (unsigned int seg);
 void conv_s1(int valor);
 void conv_s2(int valor);
+
+void write_EEPROM(uint8_t ADDRESS, uint8_t DATA);
+
+uint8_t read_EEPROM(uint8_t ADDRESS);
 
 unsigned int map(uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max);
 
@@ -2699,7 +2705,7 @@ void __attribute__((picinterrupt(("")))) isr (void)
         estado_alto (SERVO4);
 
         PORTCbits.RC4 = 0;
-# 88 "main.c"
+# 94 "main.c"
     }
 
     if (INTCONbits.RBIF)
@@ -2707,6 +2713,49 @@ void __attribute__((picinterrupt(("")))) isr (void)
         if (PORTBbits.RB0 == 0)
         {
             MODO++;
+        }
+
+        if (PORTBbits.RB1 == 0)
+        {
+            ADDRESS = ADDRESS + 4;
+        }
+
+        else if (PORTBbits.RB2 == 0)
+        {
+            ADDRESS = ADDRESS - 4;
+        }
+
+        else if (PORTBbits.RB3 == 0)
+        {
+            write_EEPROM(ADDRESS, SERVO1);
+            write_EEPROM(ADDRESS + 1, SERVO2);
+            write_EEPROM(ADDRESS + 2, SERVO3);
+            write_EEPROM(ADDRESS + 3, SERVO4);
+
+
+        }
+
+        else if (MODO == 1)
+        {
+            if (PORTBbits.RB4 == 0)
+            {
+                SERVO1 = read_EEPROM(ADDRESS);
+                SERVO2 = read_EEPROM(ADDRESS+1);
+                SERVO3 = read_EEPROM(ADDRESS+2);
+                SERVO4 = read_EEPROM(ADDRESS+3);
+
+
+
+            }
+            else if (PORTBbits.RB1 == 0)
+            {
+                ADDRESS = ADDRESS + 4;
+            }
+
+            else if (PORTBbits.RB2 == 0)
+            {
+                ADDRESS = ADDRESS - 4;
+            }
         }
 
         INTCONbits.RBIF = 0;
@@ -2824,6 +2873,8 @@ void main(void)
             PORTDbits.RD0 = 0;
             PORTDbits.RD1 = 1;
             PORTDbits.RD2 = 0;
+            CCPR2L = SERVO2;
+            CCPR1L = SERVO1;
         }
 
 
@@ -2994,6 +3045,39 @@ void conv_s1(int valor)
 void conv_s2(int valor)
 {
     SERVO2 = (unsigned short) (7+( (float)(13)/(255) ) * (valor-0));
+}
+
+uint8_t read_EEPROM (uint8_t ADDRESS)
+{
+    while (WR||RD);
+
+    EEADR = ADDRESS;
+    EECON1bits.EEPGD = 0;
+    EECON1bits.RD = 1;
+    return EEDAT;
+}
+
+void write_EEPROM(uint8_t ADDRESS, uint8_t DATA)
+{
+    uint8_t gieStatus;
+    while (WR);
+
+    EEADR = ADDRESS;
+    EEDAT = DATA;
+
+    EECON1bits.EEPGD = 0;
+    EECON1bits.WREN = 1;
+
+    gieStatus = GIE;
+    INTCONbits.GIE = 0;
+
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+
+    EECON1bits.WR = 1;
+    EECON1bits. WREN = 0;
+
+    INTCONbits.GIE = gieStatus;
 }
 
 unsigned int map (uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max){
