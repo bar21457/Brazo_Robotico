@@ -2654,9 +2654,11 @@ extern __bank0 __bit __timeout;
 
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.40\\pic\\include\\c90\\stdint.h" 1 3
 # 27 "main.c" 2
-# 43 "main.c"
+# 42 "main.c"
 void setup(void);
-# 55 "main.c"
+void setupADC(void);
+void setupPWM(void);
+# 56 "main.c"
 void main(void)
 {
     setup();
@@ -2711,4 +2713,83 @@ void setup (void)
     INTCONbits.PEIE = 1;
     INTCONbits.RBIF = 1;
     INTCONbits.RBIE = 0;
+}
+
+void setupADC(void)
+{
+
+
+    TRISAbits.TRISA0 = 1;
+    ANSELbits.ANS0 = 1;
+
+    TRISAbits.TRISA1 = 1;
+    ANSELbits.ANS1 = 1;
+
+    TRISAbits.TRISA2 = 1;
+    ANSELbits.ANS2 = 1;
+
+    TRISAbits.TRISA3 = 1;
+    ANSELbits.ANS3 = 1;
+
+
+
+    ADCON0bits.ADCS0 = 1;
+    ADCON0bits.ADCS1 = 0;
+
+    ADCON1bits.VCFG0 = 0;
+    ADCON1bits.VCFG1 = 0;
+
+    ADCON0bits.CHS0 = 0;
+    ADCON0bits.CHS1 = 0;
+    ADCON0bits.CHS2 = 0;
+    ADCON0bits.CHS3 = 0;
+
+    ADCON1bits.ADFM = 0;
+
+    ADCON0bits.ADON = 1;
+
+    _delay((unsigned long)((100)*(500000/4000000.0)));
+}
+
+void setupPWM(void)
+{
+
+
+    TRISCbits.TRISC2 = 1;
+    TRISCbits.TRISC1 = 1;
+
+
+
+    PR2 = 155;
+
+
+
+    CCP1CONbits.P1M = 0b00;
+
+    CCP1CONbits.CCP1M = 0b1100;
+    CCP2CONbits.CCP2M = 0b1111;
+
+
+
+    CCP1CONbits.DC1B = 0b11;
+    CCP2CONbits.DC2B1 = 0b1;
+    CCP2CONbits.DC2B0 = 0b1;
+
+    CCPR1L = 11;
+    CCPR2L = 11;
+
+
+
+
+
+    PIR1bits.TMR2IF = 0;
+    T2CONbits.T2CKPS = 0b11;
+    T2CONbits.TMR2ON = 1;
+
+
+
+    while(!PIR1bits.TMR2IF){};
+
+    TRISCbits.TRISC2 = 0;
+    TRISCbits.TRISC1 = 0;
 }

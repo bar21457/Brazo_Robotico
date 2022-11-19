@@ -29,7 +29,6 @@
 #define _XTAL_FREQ 500000
 #define V_TMR0 100
 
-
 //******************************************************************************
 // Variables
 //******************************************************************************
@@ -41,6 +40,8 @@
 //******************************************************************************
 
 void setup(void);
+void setupADC(void);
+void setupPWM(void);
 
 //******************************************************************************
 // Interrupciones
@@ -106,4 +107,83 @@ void setup (void)
     INTCONbits.PEIE = 1;    //Habilitamos las interrupción del PEIE
     INTCONbits.RBIF = 1;    //Habilitamos las interrupciones del PORTB (RBIF)
     INTCONbits.RBIE = 0;    //Bajamos la bandera de interrupción del PORTB (RBIE) 
+}
+
+void setupADC(void)
+{    
+    //Paso 1: Selección del puerto de entrada
+    
+    TRISAbits.TRISA0 = 1;       //Configuración del RA0 como input
+    ANSELbits.ANS0 = 1;         //Configuración del pin RA0 como análogo (AN0)
+    
+    TRISAbits.TRISA1 = 1;       //Configuración del RA1 como input
+    ANSELbits.ANS1 = 1;         //Configuración del pin RA1 como análogo (AN1)
+    
+    TRISAbits.TRISA2 = 1;       //Configuración del RA2 como input
+    ANSELbits.ANS2 = 1;         //Configuración del pin RA2 como análogo (AN2)
+    
+    TRISAbits.TRISA3 = 1;       //Configuración del RA3 como input
+    ANSELbits.ANS3 = 1;         //Configuración del pin RA3 como análogo (AN3)
+    
+    //Paso 2: Configuración del módulo ADC
+    
+    ADCON0bits.ADCS0 = 1;
+    ADCON0bits.ADCS1 = 0;       //Fosc/8
+    
+    ADCON1bits.VCFG0 = 0;       //VDD como voltaje de referencia -
+    ADCON1bits.VCFG1 = 0;       //VSS como voltaje de referencia +
+    
+    ADCON0bits.CHS0 = 0;
+    ADCON0bits.CHS1 = 0;
+    ADCON0bits.CHS2 = 0;
+    ADCON0bits.CHS3 = 0;        //Selección del canal análogo AN0 (Default)
+    
+    ADCON1bits.ADFM = 0;        //Justificado hacia la izquierda
+    
+    ADCON0bits.ADON = 1;        //Habilitamos el ADC
+    
+    __delay_us(100);            //Delay para adquirir la lectura
+}
+
+void setupPWM(void)
+{    
+    // Paso 1
+    
+    TRISCbits.TRISC2 = 1;           //Configuración del RC1 como input (CCP1)
+    TRISCbits.TRISC1 = 1;           //Configuración del RC2 como input (CCP2)
+    
+    // Paso 2
+    
+    PR2 = 155;                  // Establecemos un período de 20mS
+    
+    // Paso 3
+    
+    CCP1CONbits.P1M = 0b00;     //Selección del modo Single Output
+    
+    CCP1CONbits.CCP1M = 0b1100;     // P1A como PWM 
+    CCP2CONbits.CCP2M = 0b1111;     // P2A como PWM
+            
+   // Paso 4
+    
+    CCP1CONbits.DC1B = 0b11;    
+    CCP2CONbits.DC2B1 = 0b1;    
+    CCP2CONbits.DC2B0 = 0b1;    // CCPxCON<5:4>
+    
+    CCPR1L = 11;                // CCPR1L
+    CCPR2L = 11;                // CCPR2L
+    
+                                // Cálculo para 1.5mS de ancho de pulso
+    
+    // Paso 5
+    
+    PIR1bits.TMR2IF = 0;        // Bajamos la bandera de interrupción TMR2
+    T2CONbits.T2CKPS = 0b11;    // Prescaler de 1:16
+    T2CONbits.TMR2ON = 1;       // Se enciende el TMR2
+    
+    // Paso 6
+    
+    while(!PIR1bits.TMR2IF){};
+    
+    TRISCbits.TRISC2 = 0;       // Habilitamos la salida del PWM (RC2)
+    TRISCbits.TRISC1 = 0;       // Habilitamos la salida del PWM (RC1)
 }
