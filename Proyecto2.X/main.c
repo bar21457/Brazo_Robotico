@@ -33,7 +33,16 @@
 // Variables
 //******************************************************************************
 
+unsigned int ADC1;
+unsigned int ADC2;
+unsigned int ADC3;
+unsigned int ADC4;
+unsigned int SERVO1;
+unsigned int SERVO2;
+unsigned int SERVO3;
+unsigned int SERVO4;
 
+uint8_t MODO = 0;
 
 //******************************************************************************
 // Prototipos de Funciones
@@ -43,11 +52,52 @@ void setup(void);
 void setupADC(void);
 void setupPWM(void);
 
+void estado_alto (unsigned int seg);
+void conv_s1(int valor);
+void conv_s2(int valor);
+
+unsigned int map(uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max);
+
 //******************************************************************************
 // Interrupciones
 //******************************************************************************
 
+void __interrupt () isr (void)
+{
+    if(INTCONbits.T0IF)         // Interrupción del TMR0
+    {
+        INTCONbits.T0IF = 0;    // Limpiamos la bandera del TMR0
+        TMR0 = V_TMR0;      // Asignamos el valor del TMR0
 
+        PORTCbits.RC3 = 1;      // Encendemos el RC3
+        estado_alto (SERVO3);          
+
+        PORTCbits.RC3 = 0;      // Apagamos el RC3
+        PORTCbits.RC4 = 1;      // Encendemos el RC4
+        estado_alto (SERVO4);
+
+        PORTCbits.RC4 = 0;      // Apagamos el RC4
+        
+        /*
+         * Se establece que la interrupción del TMR0 sucederá cada 20ms para
+         * así crear una onda con un período de 20ms cuyos estados alto y bajo
+         * indicarán el grado de rotación al cual se colocarán los servos en
+         * los puertos RC3 y RC4
+         */
+        
+    }
+    
+    if (INTCONbits.RBIF)        // Interrupción del RBIF
+    {
+        if (PORTBbits.RB0 == 0) // Verificamos si se presionó RB0
+        {
+            MODO++;             // Incrementamos en 1 MODO
+        }
+        
+        INTCONbits.RBIF = 0;    // Bajamos la bandera de interrupción dle RBIF
+    }
+    return;
+}
 
 //******************************************************************************
 // Código Principal
@@ -56,10 +106,126 @@ void setupPWM(void);
 void main(void) 
 {    
     setup();
+    setupADC();
+    setupPWM();
     
     while(1)
     {
+        //**********************************************************************
+        // Modo Manual
+        //**********************************************************************
+
+        if (MODO == 0)
+        {
+            PORTDbits.RD0 = 1;
+            PORTDbits.RD1 = 0;
+            PORTDbits.RD2 = 0;
+            
+            //******************************************************************
+            // Primer Servomotor
+            //******************************************************************
+            
+            ADCON0bits.CHS = 0b0000;    // Usamos el AN0
+
+            __delay_us(100);
+
+            ADCON0bits.GO = 1;      //Iniciamos la conversión en el ADC
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+
+            ADIF = 0;           // Bajamos la bandera de interrupción del ADC
+            ADC1 = ADRESH;      // Pasamos el valor de ADRESH a ADC
+            conv_s1 (ADC1);       
+            CCPR1L = SERVO1;     
+            
+            __delay_us(100);
+            
+            //******************************************************************
+            // Segundo Servomotor
+            //******************************************************************
+
+            ADCON0bits.CHS = 0b0001;    // Usamos el AN1
+            
+            __delay_us(100);
+            
+            ADCON0bits.GO = 1;      //Iniciamos la conversión en el ADC
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+           
+            ADIF = 0;           // Bajamos la bandera de interrupción del ADC
+            ADC2 = ADRESH;      // Pasamos el valor de ADRESH a ADC2
+            conv_s2 (ADC2);      
+            CCPR2L = SERVO2;
+            
+            __delay_us(100);
+            
+            //******************************************************************
+            // Tercer Servomotor
+            //******************************************************************
+
+            ADCON0bits.CHS = 0b0010;    // Usamos el AN2
+            
+            __delay_us(100);
+            
+            ADCON0bits.GO = 1;     //Iniciamos la conversión en el ADC
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+            ADIF = 0;           // Bajamos la bandera de interrupción del ADC
+            ADC3 = ADRESH;      // Pasamos el valor de ADRESH a ADC3
+
+            SERVO3 = map(ADC3, 0, 255, 5, 17); // Mapeamos el valor de SERVO3
+            
+            __delay_us(100);
+            
+            //******************************************************************
+            // Cuarto Servomotor
+            //******************************************************************
+            
+            ADCON0bits.CHS = 0b0011;    // Usamos el AN3
+            
+            __delay_us(100);
+            
+            ADCON0bits.GO = 1;  //Iniciamos la conversión en el ADC
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+            ADIF = 0;           // Bajamos la bandera de interrupción del ADC
+            ADC4 = ADRESH;      // Pasamos el valor de ADRESH a ADC4
+            
+            SERVO4 = map(ADC4, 0, 255, 5, 17); // Mapeamos el valor de SERVO4
+            
+            __delay_us(100);  
+        }
         
+        //**********************************************************************
+        // Modo EEPROM
+        //**********************************************************************
+        
+        if (MODO == 1)
+        {
+            PORTDbits.RD0 = 0;
+            PORTDbits.RD1 = 1;
+            PORTDbits.RD2 = 0;    
+        }
+        
+        //**********************************************************************
+        // Modo UART
+        //**********************************************************************
+        
+        if (MODO == 2)
+        {
+            PORTDbits.RD0 = 0;
+            PORTDbits.RD1 = 0;
+            PORTDbits.RD2 = 1;    
+        }
+        
+        if (MODO == 3)
+        {
+            MODO = 0;   // Regresamos a MODO = 0
+        }
     }
     return;
 }
@@ -186,4 +352,35 @@ void setupPWM(void)
     
     TRISCbits.TRISC2 = 0;       // Habilitamos la salida del PWM (RC2)
     TRISCbits.TRISC1 = 0;       // Habilitamos la salida del PWM (RC1)
+}
+
+void estado_alto (unsigned int seg)
+{
+    while (seg > 0)
+    {
+        __delay_us(50);
+        seg--;
+    }
+    
+    /* 
+     * El valor del ADC mapeado para el servo indica el tiempo que se debe
+     * mantener en estado alto que indica en qué grado de rotación se va a
+     * colocar el servo
+     */
+    
+    return;
+}
+
+void conv_s1(int valor)
+{
+    SERVO1 = (unsigned short) (7+( (float)(13)/(255) ) * (valor-0));
+}
+
+void conv_s2(int valor)
+{
+    SERVO2 = (unsigned short) (7+( (float)(13)/(255) ) * (valor-0));
+}
+
+unsigned int map (uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max){
+    return ((ADC - entrada_min)*(salida_max-salida_min)) / ((entrada_max-entrada_min)+salida_min);
 }

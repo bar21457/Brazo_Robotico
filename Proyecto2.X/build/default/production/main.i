@@ -2654,18 +2654,193 @@ extern __bank0 __bit __timeout;
 
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.40\\pic\\include\\c90\\stdint.h" 1 3
 # 27 "main.c" 2
-# 42 "main.c"
+# 36 "main.c"
+unsigned int ADC1;
+unsigned int ADC2;
+unsigned int ADC3;
+unsigned int ADC4;
+unsigned int SERVO1;
+unsigned int SERVO2;
+unsigned int SERVO3;
+unsigned int SERVO4;
+
+uint8_t MODO = 0;
+
+
+
+
+
 void setup(void);
 void setupADC(void);
 void setupPWM(void);
-# 56 "main.c"
+
+void estado_alto (unsigned int seg);
+void conv_s1(int valor);
+void conv_s2(int valor);
+
+unsigned int map(uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max);
+
+
+
+
+
+void __attribute__((picinterrupt(("")))) isr (void)
+{
+    if(INTCONbits.T0IF)
+    {
+        INTCONbits.T0IF = 0;
+        TMR0 = 100;
+
+        PORTCbits.RC3 = 1;
+        estado_alto (SERVO3);
+
+        PORTCbits.RC3 = 0;
+        PORTCbits.RC4 = 1;
+        estado_alto (SERVO4);
+
+        PORTCbits.RC4 = 0;
+# 88 "main.c"
+    }
+
+    if (INTCONbits.RBIF)
+    {
+        if (PORTBbits.RB0 == 0)
+        {
+            MODO++;
+        }
+
+        INTCONbits.RBIF = 0;
+    }
+    return;
+}
+
+
+
+
+
 void main(void)
 {
     setup();
+    setupADC();
+    setupPWM();
 
     while(1)
     {
 
+
+
+
+        if (MODO == 0)
+        {
+            PORTDbits.RD0 = 1;
+            PORTDbits.RD1 = 0;
+            PORTDbits.RD2 = 0;
+
+
+
+
+
+            ADCON0bits.CHS = 0b0000;
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+
+            ADCON0bits.GO = 1;
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+
+            ADIF = 0;
+            ADC1 = ADRESH;
+            conv_s1 (ADC1);
+            CCPR1L = SERVO1;
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+
+
+
+
+
+            ADCON0bits.CHS = 0b0001;
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+
+            ADCON0bits.GO = 1;
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+
+            ADIF = 0;
+            ADC2 = ADRESH;
+            conv_s2 (ADC2);
+            CCPR2L = SERVO2;
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+
+
+
+
+
+            ADCON0bits.CHS = 0b0010;
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+
+            ADCON0bits.GO = 1;
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+            ADIF = 0;
+            ADC3 = ADRESH;
+
+            SERVO3 = map(ADC3, 0, 255, 5, 17);
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+
+
+
+
+
+            ADCON0bits.CHS = 0b0011;
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+
+            ADCON0bits.GO = 1;
+            while(ADCON0bits.GO == 1){
+                ;
+            }
+            ADIF = 0;
+            ADC4 = ADRESH;
+
+            SERVO4 = map(ADC4, 0, 255, 5, 17);
+
+            _delay((unsigned long)((100)*(500000/4000000.0)));
+        }
+
+
+
+
+
+        if (MODO == 1)
+        {
+            PORTDbits.RD0 = 0;
+            PORTDbits.RD1 = 1;
+            PORTDbits.RD2 = 0;
+        }
+
+
+
+
+
+        if (MODO == 2)
+        {
+            PORTDbits.RD0 = 0;
+            PORTDbits.RD1 = 0;
+            PORTDbits.RD2 = 1;
+        }
+
+        if (MODO == 3)
+        {
+            MODO = 0;
+        }
     }
     return;
 }
@@ -2792,4 +2967,35 @@ void setupPWM(void)
 
     TRISCbits.TRISC2 = 0;
     TRISCbits.TRISC1 = 0;
+}
+
+void estado_alto (unsigned int seg)
+{
+    while (seg > 0)
+    {
+        _delay((unsigned long)((50)*(500000/4000000.0)));
+        seg--;
+    }
+
+
+
+
+
+
+
+    return;
+}
+
+void conv_s1(int valor)
+{
+    SERVO1 = (unsigned short) (7+( (float)(13)/(255) ) * (valor-0));
+}
+
+void conv_s2(int valor)
+{
+    SERVO2 = (unsigned short) (7+( (float)(13)/(255) ) * (valor-0));
+}
+
+unsigned int map (uint8_t ADC, int entrada_min, int entrada_max, int salida_min, int salida_max){
+    return ((ADC - entrada_min)*(salida_max-salida_min)) / ((entrada_max-entrada_min)+salida_min);
 }
